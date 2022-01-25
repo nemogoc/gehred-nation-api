@@ -30,31 +30,31 @@ const getUserById = (req, res) => {
 }
 
 const createUser = (req, res) => {
-  const { name, email } = req.body
+  const { firstname, lastname, email, dob, street, city, state, zip, phone } = req.body
 
-  pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, results) => {
+  pool.query('INSERT INTO users (firstname, lastname, email, dob, street, city, state, zip, phone) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id', [firstname, lastname, email, dob, street, city, state, zip, phone], (error, results) => {
     if (error) {
       throw error
     }
-    res.status(201).send(`User added with ID: ${results.insertId}`)
+    res.status(201).send(`User added with ID: ${results.rows[0].id}`)
   })
 }
 
-const updateUser = (req, res) => {
-  const id = parseInt(req.params.id)
-  const { name, email } = req.body
+// const updateUser = (req, res) => {
+//   const id = parseInt(req.params.id)
+//   const { name, email } = req.body
 
-  pool.query(
-    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-    [name, email, id],
-    (error, results) => {
-      if (error) {
-        throw error
-      }
-      res.status(200).send(`User modified with ID: ${id}`)
-    }
-  )
-}
+//   pool.query(
+//     'UPDATE users SET name = $1, email = $2 WHERE id = $3',
+//     [name, email, id],
+//     (error, results) => {
+//       if (error) {
+//         throw error
+//       }
+//       res.status(200).send(`User modified with ID: ${id}`)
+//     }
+//   )
+// }
 
 const deleteUser = (req, res) => {
   const id = parseInt(req.params.id)
@@ -71,6 +71,6 @@ module.exports = {
   getUsers,
   getUserById,
   createUser,
-  updateUser,
+  // updateUser,
   deleteUser,
 }
