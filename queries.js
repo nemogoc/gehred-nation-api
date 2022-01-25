@@ -40,21 +40,22 @@ const createUser = (req, res) => {
     })
   }
 
-  // const updateUser = (req, res) => {
-  //   const id = parseInt(req.params.id)
-  //   const { name, email } = req.body
+  //must provide data for every param (or it will be updated to null in db)
+  const updateUser = (req, res) => {
+    const id = parseInt(req.params.id)
+    const { firstname, lastname, email, dob, street, city, state, zip, phone } = req.body
 
-  //   pool.query(
-  //     'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-  //     [name, email, id],
-  //     (error, results) => {
-  //       if (error) {
-  //         throw error
-  //       }
-  //       res.status(200).send(`User modified with ID: ${id}`)
-  //     }
-  //   )
-  // }
+    pool.query(
+      'UPDATE users SET firstname = $2, lastname = $3, email = $4, dob = $5, street = $6, city = $7, state = $8, zip = $9, phone = $10 WHERE id = $1',
+      [id, firstname, lastname, email, dob, street, city, state, zip, phone],
+      (error, results) => {
+        if (error) {
+          throw error
+        }
+        res.status(200).send(`User modified with ID: ${id}`)
+      }
+    )
+  }
 
   const deleteUser = (req, res) => {
     const id = parseInt(req.params.id)
@@ -70,6 +71,6 @@ const createUser = (req, res) => {
   module.exports = {
     getUsers,
     createUser,
-    // updateUser,
+    updateUser,
     deleteUser,
   }
