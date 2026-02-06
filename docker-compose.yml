@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: gehred-nation-db
+    environment:
+      POSTGRES_USER: gehred
+      POSTGRES_PASSWORD: gehred_password
+      POSTGRES_DB: gehred_nation
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
